@@ -1,0 +1,29 @@
+# Konfigurasi dan credential lokal
+.env
+.env.*
+!.env.example
+config/koneksi.php
+
+# Backup database yang dapat memuat data pengguna/transaksi
+database/backups/
+database/dumps/
+*.sql.gz
+
+# Log dan file sementara
+logs/
+*.log
+tmp/
+temp/
+*.tmp
+*.cache
+
+# Dependency lokal (jika nantinya Composer digunakan)
+vendor/
+
+# Editor dan sistem operasi
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+

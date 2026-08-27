@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once __DIR__ . '/functions/security.php';
 
 // Kosongkan semua variabel sesi
 $_SESSION = array();

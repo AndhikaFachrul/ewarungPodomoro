@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
+require_once __DIR__ . '/../functions/security.php';
 require_once __DIR__ . '/../functions/ratelimit.php';
-session_start();
 
 // 1. Terapkan Rate Limiting: Max 20 request per menit
 if (!check_rate_limit('/api/login.php', 20, 60, 'token_bucket')) {
@@ -32,7 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['id_user'] = $user['id_user'];
         $_SESSION['nama'] = $user['nama'];
         $_SESSION['role'] = $user['role'];
-        $_SESSION['CREATED'] = time();
+        $_SESSION['LAST_ACTIVITY'] = time();
+        $_SESSION['LAST_REGENERATED'] = time();
         
         echo json_encode([
             "status" => true, 

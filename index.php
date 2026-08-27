@@ -1,4 +1,4 @@
-<?php session_start(); ?>
+<?php require_once __DIR__ . '/functions/security.php'; ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>

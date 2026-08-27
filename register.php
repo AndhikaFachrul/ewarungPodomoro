@@ -35,11 +35,12 @@ if (isset($_SESSION['id_user'])) {
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control" required>
+                            <input type="email" name="email" class="form-control" maxlength="100" autocomplete="email" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Nomor WhatsApp</label>
-                            <input type="text" name="no_hp" class="form-control" required>
+                            <input type="tel" name="no_hp" class="form-control" maxlength="20" inputmode="tel" autocomplete="tel" placeholder="Contoh: 081234567890" required>
+                            <div class="form-text">Gunakan nomor Indonesia dengan awalan 08, 628, atau +628.</div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Password</label>

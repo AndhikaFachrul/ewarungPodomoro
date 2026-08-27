@@ -1,20 +1,25 @@
 <?php
 require_once __DIR__ . '/../functions/security.php';
+require_once __DIR__ . '/../functions/upload.php';
 require_once __DIR__ . '/../config/koneksi.php';
 check_admin();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_csrf_page();
+
     $nama = htmlspecialchars(trim($_POST['nama_barang']));
     $kategori = htmlspecialchars(trim($_POST['kategori']));
     $stok = intval($_POST['stok']); // Stok adalah total unit terkecil (misal: 100 bungkus)
     
-    // Proses Upload Gambar
-    $gambar = "";
-    if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] === 0) {
-        $file_ext = strtolower(pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION));
-        $gambar = time() . "_" . uniqid() . "." . $file_ext;
-        move_uploaded_file($_FILES['gambar']['tmp_name'], "../assets/img/" . $gambar);
+    // Validasi upload berdasarkan isi file, bukan ekstensi dari pengguna.
+    try {
+        $gambar = save_product_image($_FILES['gambar'] ?? null, __DIR__ . '/../assets/img');
+    } catch (RuntimeException $e) {
+        http_response_code(422);
+        die(htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8'));
     }
+
+    $gambar = $gambar ?? 'default.jpg';
 
     // Insert ke tabel barang (Induk)
     $stmt_barang = mysqli_prepare($conn, "INSERT INTO barang (nama_barang, kategori, stok, gambar) VALUES (?, ?, ?, ?)");
@@ -55,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="card-header bg-primary text-white">Tambah Barang</div>
         <div class="card-body">
             <form action="" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
                 <div class="mb-3">
                     <label>Nama Barang Induk</label>
                     <input type="text" name="nama_barang" class="form-control" required placeholder="Contoh: Indomie Goreng">
@@ -89,7 +95,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <button type="button" class="btn btn-sm btn-success mb-3" onclick="tambahVarian()">+ Tambah Varian Lain</button>
 
-                <div class="mb-3"><label>Gambar</label><input type="file" name="gambar" class="form-control"></div>
+                <div class="mb-3">
+                    <label>Gambar</label>
+                    <input type="file" name="gambar" class="form-control" accept="image/jpeg,image/png,image/webp">
+                    <small class="text-muted">Format JPG, PNG, atau WEBP. Maksimal 2 MB.</small>
+                </div>
                 <button type="submit" class="btn btn-primary w-100">Simpan Barang</button>
             </form>
         </div>

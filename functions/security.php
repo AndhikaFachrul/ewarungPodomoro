@@ -86,4 +86,12 @@ function require_csrf_json()
         exit();
     }
 }
+
+function require_csrf_page()
+{
+    if (!verify_csrf_token()) {
+        http_response_code(403);
+        die('Permintaan tidak valid. Silakan kembali dan muat ulang halaman.');
+    }
+}
 ?>

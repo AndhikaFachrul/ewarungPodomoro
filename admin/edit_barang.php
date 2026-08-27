@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../functions/security.php';
+require_once __DIR__ . '/../functions/upload.php';
 require_once __DIR__ . '/../config/koneksi.php';
 check_admin();
 
@@ -24,25 +25,30 @@ while($v = mysqli_fetch_assoc($result_var)) { $varians[] = $v; }
 
 // PROSES UPDATE DATA
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_csrf_page();
+
     $nama = htmlspecialchars(trim($_POST['nama_barang']));
     $kategori = htmlspecialchars(trim($_POST['kategori']));
     $stok = intval($_POST['stok']);
-    $gambar_lama = $_POST['gambar_lama'];
+    $gambar_lama = $barang['gambar'];
     
-    $gambar_baru = $gambar_lama; 
-    if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] === 0) {
-        $file_ext = strtolower(pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION));
-        $gambar_baru = time() . "_" . uniqid() . "." . $file_ext;
-        move_uploaded_file($_FILES['gambar']['tmp_name'], "../assets/img/" . $gambar_baru);
-        if ($gambar_lama && file_exists("../assets/img/" . $gambar_lama)) {
-            unlink("../assets/img/" . $gambar_lama);
-        }
+    try {
+        $gambar_upload = save_product_image($_FILES['gambar'] ?? null, __DIR__ . '/../assets/img');
+    } catch (RuntimeException $e) {
+        http_response_code(422);
+        die(htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8'));
     }
+
+    $gambar_baru = $gambar_upload ?? $gambar_lama;
 
     // 1. Update Tabel Induk
     $stmt_upd = mysqli_prepare($conn, "UPDATE barang SET nama_barang=?, kategori=?, stok=?, gambar=? WHERE id_barang=?");
     mysqli_stmt_bind_param($stmt_upd, "ssisi", $nama, $kategori, $stok, $gambar_baru, $id_barang);
     mysqli_stmt_execute($stmt_upd);
+
+    if ($gambar_upload !== null && $gambar_upload !== $gambar_lama) {
+        delete_product_image($gambar_lama, __DIR__ . '/../assets/img');
+    }
 
     // 2. Update Tabel Varian
     $id_varians = $_POST['id_varian'] ?? [];
@@ -94,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="card-header bg-warning text-dark fw-bold">Edit Data Barang</div>
         <div class="card-body">
             <form action="" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="gambar_lama" value="<?php echo htmlspecialchars($barang['gambar']); ?>">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
                 
                 <div class="mb-3">
                     <label>Nama Barang Induk</label>
@@ -139,8 +145,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="mb-4">
                     <label>Upload Gambar Baru (Opsional)</label>
-                    <input type="file" name="gambar" class="form-control" accept="image/*">
-                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah gambar.</small>
+                    <input type="file" name="gambar" class="form-control" accept="image/jpeg,image/png,image/webp">
+                    <small class="text-muted">JPG, PNG, atau WEBP maksimal 2 MB. Biarkan kosong jika tidak ingin mengubah gambar.</small>
                 </div>
                 <a href="barang.php" class="btn btn-secondary">Batal</a>
                 <button type="submit" class="btn btn-warning fw-bold">Update Barang</button>

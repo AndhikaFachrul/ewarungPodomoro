@@ -1,12 +1,20 @@
 <?php
 require_once __DIR__ . '/../functions/security.php';
+require_once __DIR__ . '/../functions/upload.php';
 require_once __DIR__ . '/../config/koneksi.php';
 
 // Proteksi mutlak admin
 check_admin();
 
-if (isset($_GET['id'])) {
-    $id_hapus = intval($_GET['id']);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    die('Metode tidak diizinkan.');
+}
+
+require_csrf_page();
+$id_hapus = intval($_POST['id'] ?? 0);
+
+if ($id_hapus > 0) {
     
     // 1. Cari gambar lama untuk dihapus dari folder assets/img
     $stmt_img = mysqli_prepare($conn, "SELECT gambar FROM barang WHERE id_barang = ?");
@@ -15,10 +23,7 @@ if (isset($_GET['id'])) {
     $res_img = mysqli_stmt_get_result($stmt_img);
     
     if ($row = mysqli_fetch_assoc($res_img)) {
-        // Hapus file fisik gambar jika eksis dan bukan default
-        if (!empty($row['gambar']) && file_exists("../assets/img/" . $row['gambar'])) {
-            unlink("../assets/img/" . $row['gambar']);
-        }
+        delete_product_image($row['gambar'], __DIR__ . '/../assets/img');
     }
     mysqli_stmt_close($stmt_img);
     
@@ -34,7 +39,6 @@ if (isset($_GET['id'])) {
     mysqli_stmt_close($stmt_del);
     exit();
 } else {
-    // Jika tidak ada parameter ID, kembalikan ke halaman barang
     header("Location: barang.php");
     exit();
 }

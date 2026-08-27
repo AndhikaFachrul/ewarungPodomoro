@@ -5,8 +5,9 @@ require_once __DIR__ . '/../config/koneksi.php';
 check_admin();
 
 // Proses Update Status Transaksi
-if (isset($_GET['selesai'])) {
-    $id_trx = intval($_GET['selesai']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selesai'])) {
+    require_csrf_page();
+    $id_trx = intval($_POST['selesai']);
     $stmt_upd = mysqli_prepare($conn, "UPDATE transaksi SET status = 'selesai' WHERE id_transaksi = ?");
     mysqli_stmt_bind_param($stmt_upd, "i", $id_trx);
     mysqli_stmt_execute($stmt_upd);
@@ -83,7 +84,11 @@ $result = mysqli_query($conn, $query);
                                 </td>
                                 <td>
                                     <?php if($row['status'] == 'pending'): ?>
-                                        <a href="transaksi.php?selesai=<?php echo $row['id_transaksi']; ?>" class="btn btn-success btn-sm" onclick="return confirm('Tandai pesanan ini selesai?');">✓ Selesai</a>
+                                        <form action="transaksi.php" method="POST" class="d-inline" onsubmit="return confirm('Tandai pesanan ini selesai?');">
+                                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                                            <input type="hidden" name="selesai" value="<?php echo $row['id_transaksi']; ?>">
+                                            <button type="submit" class="btn btn-success btn-sm">✓ Selesai</button>
+                                        </form>
                                     <?php else: ?>
                                         <button class="btn btn-secondary btn-sm" disabled>Selesai</button>
                                     <?php endif; ?>

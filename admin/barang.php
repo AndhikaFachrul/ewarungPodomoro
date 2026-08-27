@@ -5,30 +5,6 @@ require_once __DIR__ . '/../config/koneksi.php';
 // Validasi akses Admin
 check_admin();
 
-// Proses Hapus Barang
-if (isset($_GET['hapus'])) {
-    $id_hapus = intval($_GET['hapus']);
-    
-    // Ambil nama gambar untuk dihapus dari folder
-    $stmt_img = mysqli_prepare($conn, "SELECT gambar FROM barang WHERE id_barang = ?");
-    mysqli_stmt_bind_param($stmt_img, "i", $id_hapus);
-    mysqli_stmt_execute($stmt_img);
-    $res_img = mysqli_stmt_get_result($stmt_img);
-    
-    if ($row = mysqli_fetch_assoc($res_img)) {
-        if ($row['gambar'] && file_exists("../assets/img/" . $row['gambar'])) {
-            unlink("../assets/img/" . $row['gambar']);
-        }
-    }
-    
-    // Hapus data dari database
-    $stmt_del = mysqli_prepare($conn, "DELETE FROM barang WHERE id_barang = ?");
-    mysqli_stmt_bind_param($stmt_del, "i", $id_hapus);
-    if (mysqli_stmt_execute($stmt_del)) {
-        echo "<script>alert('Barang berhasil dihapus!'); window.location.href='barang.php';</script>";
-    }
-}
-
 // Mengambil data barang sekaligus harga termurah dari tabel varian
 $query = "SELECT b.*, 
           (SELECT MIN(harga) FROM varian_barang WHERE id_barang = b.id_barang) as harga_mulai 
@@ -98,7 +74,11 @@ $result = mysqli_query($conn, $query);
                                 </td>
                                 <td>
                                     <a href="edit_barang.php?id=<?php echo $row['id_barang']; ?>" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="barang.php?hapus=<?php echo $row['id_barang']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?');">Hapus</a>
+                                    <form action="hapus_barang.php" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus?');">
+                                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                                        <input type="hidden" name="id" value="<?php echo $row['id_barang']; ?>">
+                                        <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                    </form>
                                 </td>
                             </tr>
                             <?php endwhile; ?>

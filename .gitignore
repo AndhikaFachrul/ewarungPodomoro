@@ -2,7 +2,6 @@
 .env
 .env.*
 !.env.example
-config/koneksi.php
 
 # Backup database yang dapat memuat data pengguna/transaksi
 database/backups/
@@ -26,4 +25,3 @@ vendor/
 .DS_Store
 Thumbs.db
 desktop.ini
-

@@ -23,6 +23,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_csrf_json();
 
     $id_user = $_SESSION['id_user'];
+    $no_wa = getenv('ADMIN_WHATSAPP') !== false
+        ? preg_replace('/\D+/', '', getenv('ADMIN_WHATSAPP'))
+        : '6283833933667';
+
+    if (!preg_match('/^628[1-9][0-9]{7,10}$/', $no_wa)) {
+        http_response_code(500);
+        echo json_encode(["status" => false, "message" => "Nomor WhatsApp admin belum dikonfigurasi."]);
+        exit();
+    }
 
     mysqli_begin_transaction($conn);
 
@@ -122,9 +131,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Jika semua query di atas berhasil, simpan permanen ke database
         mysqli_commit($conn);
 
-        //Buat URL WhatsApp (Gunakan wa.me dan urlencode)
-        $no_wa = "6283833933667"; // Ganti dengan nomor asli Admin (Harus diawali 62)
-        
         // urlencode() akan secara otomatis mengubah spasi dan enter menjadi format link yang sah
         $wa_url = "https://wa.me/" . $no_wa . "?text=" . urlencode($pesanan_teks);
 

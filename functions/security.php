@@ -1,6 +1,37 @@
 <?php
 $is_https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
 
+function app_base_path()
+{
+    static $base_path = null;
+
+    if ($base_path !== null) {
+        return $base_path;
+    }
+
+    $document_root = realpath($_SERVER['DOCUMENT_ROOT'] ?? '');
+    $application_root = realpath(__DIR__ . '/..');
+
+    if ($document_root === false || $application_root === false) {
+        return $base_path = '';
+    }
+
+    $document_root = rtrim(str_replace('\\', '/', $document_root), '/');
+    $application_root = rtrim(str_replace('\\', '/', $application_root), '/');
+
+    if (stripos($application_root, $document_root) !== 0) {
+        return $base_path = '';
+    }
+
+    $relative_path = trim(substr($application_root, strlen($document_root)), '/');
+    return $base_path = $relative_path === '' ? '' : '/' . $relative_path;
+}
+
+function app_url($path = '')
+{
+    return app_base_path() . '/' . ltrim($path, '/');
+}
+
 // Security headers yang aman untuk localhost maupun production.
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: SAMEORIGIN');
@@ -25,7 +56,7 @@ if (isset($_SESSION['id_user'])) {
     if (isset($_SESSION['LAST_ACTIVITY']) && time() - $_SESSION['LAST_ACTIVITY'] > 1800) {
         $_SESSION = [];
         session_destroy();
-        header('Location: /ewarung/login.php?msg=timeout');
+        header('Location: ' . app_url('login.php?msg=timeout'));
         exit();
     }
 
@@ -41,7 +72,7 @@ if (isset($_SESSION['id_user'])) {
 function check_login()
 {
     if (!isset($_SESSION['id_user'])) {
-        header("Location: /ewarung/login.php");
+        header('Location: ' . app_url('login.php'));
         exit();
     }
 }

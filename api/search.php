@@ -1,9 +1,4 @@
 <?php
-// Tampilkan error (hanya untuk proses development/debugging)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 header('Content-Type: application/json');
 
 // Memanggil koneksi database
@@ -50,10 +45,11 @@ $result = mysqli_query($conn, $query);
 
 // Menangkap dan menampilkan pesan jika terjadi error pada database
 if (!$result) {
+    error_log('Search query failed: ' . mysqli_error($conn));
     http_response_code(500);
     echo json_encode([
         'status' => 'error', 
-        'message' => 'Terjadi kesalahan pada query database: ' . mysqli_error($conn)
+        'message' => 'Terjadi kesalahan saat mencari barang.'
     ]);
     exit;
 }

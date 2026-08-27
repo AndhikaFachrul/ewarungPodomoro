@@ -30,10 +30,11 @@ if ($result) {
         "data" => $data
     ]);
 } else {
+    error_log('Get barang query failed: ' . mysqli_error($conn));
+    http_response_code(500);
     echo json_encode([
         "status" => false,
-        // Tambahkan mysqli_error untuk memudahkan debugging jika terjadi kesalahan lagi
-        "message" => "Gagal mengambil data barang: " . mysqli_error($conn)
+        "message" => "Gagal mengambil data barang."
     ]);
 }
 ?>

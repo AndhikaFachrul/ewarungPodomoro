@@ -75,21 +75,22 @@ ewarungPodomoro/
    database/ewarung_podomoro.sql
    ```
 
-4. Buat konfigurasi koneksi lokal pada `config/koneksi.php`:
+4. Konfigurasi default sudah sesuai Laragon (`localhost`, user `root`, password kosong,
+   dan database `ewarung_podomoro`), sehingga tidak perlu mengubah file PHP.
 
-   ```php
-   <?php
-   $host = 'localhost';
-   $user = 'root';
-   $pass = '';
-   $db   = 'ewarung_podomoro';
+   Pada VPS, konfigurasi diberikan melalui environment variables berikut:
 
-   $conn = mysqli_connect($host, $user, $pass, $db);
-
-   if (!$conn) {
-       die('Koneksi database gagal.');
-   }
+   ```text
+   DB_HOST
+   DB_PORT
+   DB_NAME
+   DB_USER
+   DB_PASSWORD
+   ADMIN_WHATSAPP
    ```
+
+   `ADMIN_WHATSAPP` menggunakan format internasional tanpa tanda `+`, misalnya
+   `6281234567890`. Jangan menyimpan password database VPS di repository.
 
 5. Buka aplikasi melalui alamat Laragon, misalnya:
 
@@ -156,4 +157,3 @@ Endpoint utama yang dilindungi:
 ## Lisensi
 
 Repository ini digunakan untuk keperluan penelitian dan pengembangan skripsi.
-

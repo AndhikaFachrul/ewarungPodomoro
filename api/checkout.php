@@ -1,3 +1,4 @@
+<?php
 header('Content-Type: application/json');
 require_once __DIR__ . '/../functions/security.php';
 require_once __DIR__ . '/../config/koneksi.php';

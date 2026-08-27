@@ -13,6 +13,8 @@ if (!isset($_SESSION['id_user'])) {
 $id_user = $_SESSION['id_user'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_csrf_json();
+
     // 1. PERUBAHAN: Menangkap id_varian, bukan id_barang
     $id_varian = intval($_POST['id_varian'] ?? 0);
     $qty = intval($_POST['qty'] ?? 1);

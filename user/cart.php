@@ -75,6 +75,8 @@ check_login();
 </div>
 
 <script>
+const csrfToken = <?php echo json_encode(csrf_token()); ?>;
+
 document.addEventListener("DOMContentLoaded", loadCart);
 
 function loadCart() {
@@ -129,6 +131,7 @@ function updateQty(id_cart, new_qty) {
     let formData = new FormData();
     formData.append('id_cart', id_cart);
     formData.append('qty', new_qty);
+    formData.append('csrf_token', csrfToken);
 
     fetch('../api/update_cart.php', { method: 'POST', body: formData })
     .then(response => response.json())
@@ -146,6 +149,7 @@ function deleteItem(id_cart) {
     if(confirm("Apakah Anda yakin ingin menghapus barang ini dari keranjang?")) {
         let formData = new FormData();
         formData.append('id_cart', id_cart);
+        formData.append('csrf_token', csrfToken);
 
         fetch('../api/delete_cart.php', { method: 'POST', body: formData })
         .then(response => response.json())
@@ -165,7 +169,10 @@ document.getElementById('btn-checkout').addEventListener('click', function() {
     btn.disabled = true;
     btn.innerText = "Memproses...";
 
-    fetch('../api/checkout.php', { method: 'POST' })
+    let formData = new FormData();
+    formData.append('csrf_token', csrfToken);
+
+    fetch('../api/checkout.php', { method: 'POST', body: formData })
     .then(response => {
         if (response.status === 429) {
             throw new Error("Terlalu banyak permintaan (Rate Limit). Tunggu beberapa saat.");

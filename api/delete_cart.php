@@ -5,6 +5,8 @@ require_once __DIR__ . '/../config/koneksi.php';
 
 // Pastikan method adalah POST dan user sudah login
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['id_user'])) {
+    require_csrf_json();
+
     $id_cart = intval($_POST['id_cart']);
     $id_user = $_SESSION['id_user'];
 

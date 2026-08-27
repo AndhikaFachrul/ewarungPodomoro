@@ -54,4 +54,36 @@ function check_admin()
         die("Akses ditolak.");
     }
 }
+
+function csrf_token()
+{
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+
+    return $_SESSION['csrf_token'];
+}
+
+function verify_csrf_token($token = null)
+{
+    if ($token === null) {
+        $token = $_POST['csrf_token'] ?? ($_SERVER['HTTP_X_CSRF_TOKEN'] ?? '');
+    }
+
+    return is_string($token)
+        && isset($_SESSION['csrf_token'])
+        && hash_equals($_SESSION['csrf_token'], $token);
+}
+
+function require_csrf_json()
+{
+    if (!verify_csrf_token()) {
+        http_response_code(403);
+        echo json_encode([
+            'status' => false,
+            'message' => 'Permintaan tidak valid. Silakan muat ulang halaman dan coba lagi.',
+        ]);
+        exit();
+    }
+}
 ?>

@@ -59,6 +59,7 @@ while($row = mysqli_fetch_assoc($res_var)) {
             
             <?php if(isset($_SESSION['id_user'])): ?>
                 <form id="formCart" class="mt-4">
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
                     <div class="mb-3">
                         <label class="fw-bold mb-2">Pilih Satuan & Harga:</label>
                         <select name="id_varian" class="form-select" required>

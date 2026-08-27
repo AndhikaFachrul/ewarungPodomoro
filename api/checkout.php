@@ -20,6 +20,8 @@ if (!check_rate_limit('/api/checkout.php', 10, 60)) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_csrf_json();
+
     $id_user = $_SESSION['id_user'];
 
     mysqli_begin_transaction($conn);

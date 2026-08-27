@@ -9,27 +9,15 @@ header('Content-Type: application/json');
 // Memanggil koneksi database
 require_once __DIR__ . '/../config/koneksi.php';
 
-// Mendeteksi dan mengaktifkan modul rate limiting
-$rate_limit_path = __DIR__ . '/../functions/ratelimit.php';
+// Mengaktifkan rate limiting untuk endpoint pencarian
+require_once __DIR__ . '/../functions/ratelimit.php';
 
-if (file_exists($rate_limit_path)) {
-    require_once $rate_limit_path;
-    $ip_address = $_SERVER['REMOTE_ADDR'];
-    // Validasi batasan request
-    $is_allowed = check_rate_limit($ip_address, 'search_endpoint');
-
-    if (!$is_allowed) {
-        http_response_code(429);
-        echo json_encode([
-            'status' => 'error', 
-            'message' => 'Permintaan terlalu cepat. Modul rate limiting aktif.'
-        ]);
-        exit;
-    }
-} else {
-    // Memberikan respons terstruktur jika file rate_limit tidak ditemukan
-    http_response_code(500);
-    echo json_encode(['status' => 'error', 'message' => 'File rate limiting tidak ditemukan di path: ' . $rate_limit_path]);
+if (!check_rate_limit('/api/search.php', 20, 60, 'token_bucket')) {
+    http_response_code(429);
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Permintaan terlalu cepat. Silakan coba lagi nanti.'
+    ]);
     exit;
 }
 

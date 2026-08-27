@@ -3,7 +3,7 @@ header('Content-Type: application/json');
 require_once __DIR__ . '/../functions/ratelimit.php';
 
 // Rate Limiting: Max 10 request per menit untuk endpoint register
-if (!check_rate_limit('/api/login.php', 20, 60, 'token_bucket')) {
+if (!check_rate_limit('/api/register.php', 10, 60, 'token_bucket')) {
     http_response_code(429);
     echo json_encode(["status" => false, "message" => "Too many requests. Silakan coba lagi nanti."]);
     exit();

@@ -26,6 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = mysqli_fetch_assoc($result);
 
     if ($user && password_verify($password, $user['password'])) {
+        session_regenerate_id(true);
+
         // Set Session
         $_SESSION['id_user'] = $user['id_user'];
         $_SESSION['nama'] = $user['nama'];

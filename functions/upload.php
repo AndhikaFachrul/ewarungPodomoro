@@ -57,4 +57,3 @@ function delete_product_image($filename, $upload_directory)
         unlink($path);
     }
 }
-

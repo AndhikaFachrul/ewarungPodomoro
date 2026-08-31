@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `barang` (
   `kategori` VARCHAR(50) NOT NULL,
   `stok` INT UNSIGNED NOT NULL DEFAULT 0,
   `gambar` VARCHAR(255) DEFAULT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_barang`),
   KEY `idx_barang_nama` (`nama_barang`),
   KEY `idx_barang_kategori` (`kategori`)

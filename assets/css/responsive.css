@@ -1,0 +1,420 @@
+/* Responsivitas antarmuka pelanggan Toko Podomoro */
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+img,
+iframe {
+    max-width: 100%;
+}
+
+.navbar-brand {
+    min-width: 0;
+}
+
+.home-product-card {
+    overflow: hidden;
+}
+
+.home-product-name,
+.card-produk h6 {
+    overflow-wrap: anywhere;
+}
+
+.products-toolbar {
+    gap: 1rem;
+}
+
+.about-brand-lockup {
+    gap: 1.25rem;
+}
+
+.about-brand-logo {
+    flex: 0 0 auto;
+}
+
+.site-footer {
+    background-color: #122b4f;
+    color: #fff;
+}
+
+.site-footer .footer-heading {
+    letter-spacing: 0.5px;
+}
+
+.site-footer .footer-link {
+    color: #fff;
+    text-decoration: none;
+}
+
+.site-footer .footer-link:hover,
+.site-footer .footer-link:focus {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.cart-table-card,
+.cart-summary-card {
+    overflow: hidden;
+}
+
+@media (max-width: 767.98px) {
+    .navbar {
+        padding-top: 0.65rem !important;
+        padding-bottom: 0.65rem !important;
+    }
+
+    .navbar .container {
+        padding-right: 0.75rem;
+        padding-left: 0.75rem;
+    }
+
+    .navbar-brand img {
+        height: 36px !important;
+        margin-right: 8px !important;
+    }
+
+    .navbar-brand span {
+        font-size: 0.72rem !important;
+        letter-spacing: 0.45px !important;
+    }
+
+    .navbar-toggler {
+        padding: 0.28rem 0.48rem;
+        font-size: 0.95rem;
+    }
+
+    .navbar-collapse {
+        padding: 0.45rem 0 0.15rem;
+    }
+
+    .navbar-nav {
+        align-items: stretch !important;
+    }
+
+    .navbar-nav .nav-item {
+        margin-left: 0 !important;
+        text-align: center;
+    }
+
+    .navbar-nav .nav-link {
+        display: inline-block;
+        padding: 0.42rem 0.75rem;
+    }
+
+    .navbar-nav .dropdown-menu {
+        position: static !important;
+        width: min(100%, 270px);
+        margin: 0.25rem auto 0.5rem !important;
+        border: 1px solid #e9ecef !important;
+        box-shadow: none !important;
+        text-align: left;
+    }
+
+    .hero-section {
+        padding: 2rem 0 1.5rem !important;
+    }
+
+    .hero-section h1 {
+        font-size: clamp(1.7rem, 9vw, 2.25rem);
+        line-height: 1.08;
+    }
+
+    .hero-section p {
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        line-height: 1.55;
+    }
+
+    .hero-section .hero-image {
+        max-height: 180px;
+        width: auto;
+    }
+
+    .home-product-section {
+        margin-top: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .home-product-card {
+        padding: 0.75rem !important;
+    }
+
+    .home-product-image {
+        height: 145px !important;
+        margin-top: 0 !important;
+    }
+
+    .home-product-name {
+        min-height: auto;
+        font-size: 0.9rem !important;
+    }
+
+    .home-product-price {
+        margin-bottom: 0.75rem !important;
+        font-size: 1rem !important;
+    }
+
+    .home-product-button {
+        width: 100% !important;
+        padding: 0.55rem 0.75rem !important;
+        font-size: 0.78rem;
+        white-space: nowrap;
+    }
+
+    .products-toolbar {
+        flex-direction: column;
+        align-items: stretch !important;
+        margin-bottom: 1.25rem !important;
+    }
+
+    .products-toolbar h4 {
+        font-size: 1.2rem;
+    }
+
+    .products-toolbar .search-container {
+        width: 100% !important;
+    }
+
+    .card-produk .img-container {
+        min-height: 112px;
+    }
+
+    .card-produk .card-body {
+        padding-left: 0.75rem;
+    }
+
+    .about-brand-section {
+        margin-top: 1.75rem !important;
+        padding-top: 0 !important;
+    }
+
+    .about-brand-lockup {
+        gap: 0.7rem;
+        margin-bottom: 2rem !important;
+    }
+
+    .about-brand-logo {
+        height: 64px !important;
+        margin-right: 0 !important;
+    }
+
+    .about-brand-name span {
+        font-size: clamp(1.15rem, 8vw, 1.55rem) !important;
+        letter-spacing: 0.75px !important;
+    }
+
+    .about-copy {
+        margin-bottom: 2rem !important;
+    }
+
+    .about-copy h3,
+    .about-sections h4,
+    .contact-section h4 {
+        font-size: 1.15rem;
+    }
+
+    .about-copy p {
+        font-size: 0.9rem;
+        line-height: 1.75 !important;
+        text-align: left !important;
+    }
+
+    .about-sections {
+        padding-bottom: 0 !important;
+        margin-bottom: 2rem !important;
+    }
+
+    .about-sections hr {
+        margin-bottom: 1.75rem !important;
+    }
+
+    .about-sections ul {
+        padding-left: 1.25rem !important;
+        font-size: 0.9rem;
+    }
+
+    .contact-section {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+
+    .contact-section iframe {
+        height: 210px;
+    }
+
+    .cart-navbar .navbar-brand img {
+        height: 32px !important;
+    }
+
+    .cart-back-button {
+        padding: 0.4rem 0.55rem;
+        font-size: 0.72rem;
+        white-space: nowrap;
+    }
+
+    .cart-page {
+        margin-top: 1.5rem !important;
+        padding-right: 0.75rem;
+        padding-left: 0.75rem;
+    }
+
+    .cart-page h3 {
+        margin-bottom: 1rem !important;
+        font-size: 1.25rem;
+    }
+
+    .cart-table-card .card-body {
+        padding: 0.75rem;
+    }
+
+    #cart-table {
+        margin-bottom: 0;
+    }
+
+    #cart-table thead {
+        display: none;
+    }
+
+    #cart-table,
+    #cart-table tbody,
+    #cart-table tr,
+    #cart-table td {
+        display: block;
+        width: 100%;
+    }
+
+    #cart-table tr {
+        padding: 0.45rem 0;
+    }
+
+    #cart-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.45rem 0;
+        border: 0;
+        text-align: right;
+    }
+
+    #cart-table td::before {
+        content: attr(data-label);
+        flex: 0 0 38%;
+        color: #495057;
+        font-weight: 600;
+        text-align: left;
+    }
+
+    #cart-table td.cart-product-cell,
+    #cart-table td.cart-empty-cell {
+        display: block;
+        text-align: left;
+    }
+
+    #cart-table td.cart-empty-cell {
+        padding: 1rem 0;
+        text-align: center;
+    }
+
+    #cart-table td.cart-product-cell::before,
+    #cart-table td.cart-empty-cell::before {
+        content: none;
+    }
+
+    #cart-table .input-group {
+        margin-left: auto;
+    }
+
+    .cart-summary-card {
+        margin-top: 0.75rem;
+    }
+
+    .auth-page {
+        margin-top: 1.5rem !important;
+        padding-right: 0.75rem;
+        padding-left: 0.75rem;
+    }
+
+    .auth-page .card-body {
+        padding: 1.25rem !important;
+    }
+
+    .detail-navbar {
+        margin-bottom: 1.5rem !important;
+    }
+
+    .detail-card {
+        margin-right: 0;
+        margin-left: 0;
+        padding: 1rem !important;
+    }
+
+    .detail-card .product-detail-image {
+        max-height: 250px !important;
+        margin-bottom: 1.25rem;
+    }
+
+    .site-footer {
+        margin-top: 2rem !important;
+        padding-top: 1.15rem !important;
+        padding-bottom: 0.75rem !important;
+    }
+
+    .site-footer .footer-column {
+        margin-bottom: 1rem !important;
+    }
+
+    .site-footer .footer-heading {
+        margin-bottom: 0.65rem !important;
+        font-size: 0.95rem;
+    }
+
+    .site-footer li {
+        margin-bottom: 0.45rem !important;
+        font-size: 0.83rem;
+    }
+
+    .site-footer li i {
+        font-size: 0.95rem !important;
+        margin-right: 0.65rem !important;
+    }
+
+    .site-footer .footer-contact {
+        font-size: 0.82rem !important;
+        line-height: 1.45 !important;
+    }
+
+    .site-footer hr {
+        margin-top: 0.25rem !important;
+        margin-bottom: 0.65rem !important;
+    }
+
+    .site-footer .footer-copyright {
+        font-size: 0.72rem !important;
+    }
+}
+
+@media (max-width: 359.98px) {
+    .navbar-brand img {
+        height: 32px !important;
+    }
+
+    .navbar-brand span {
+        font-size: 0.66rem !important;
+    }
+
+    .hero-section h1 {
+        font-size: 1.65rem;
+    }
+
+    .about-brand-logo {
+        height: 56px !important;
+    }
+
+    .about-brand-name span {
+        font-size: 1.05rem !important;
+    }
+}

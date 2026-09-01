@@ -151,8 +151,24 @@ if ($configuredSecret === '') {
     respond(503, ['status' => false, 'message' => 'Webhook belum dikonfigurasi.']);
 }
 
-$receivedSecret = trim((string) ($data['secret'] ?? $data['secret_key'] ?? ''));
+$receivedSecret = trim((string) (
+    $data['secret']
+    ?? $data['secret_key']
+    ?? $data['secretkey']
+    ?? $data['secretKey']
+    ?? ''
+));
 if ($receivedSecret === '' || !hash_equals($configuredSecret, $receivedSecret)) {
+    $payloadKeys = [];
+    foreach (array_keys($data) as $payloadKey) {
+        $payloadKeys[] = preg_replace('/[^A-Za-z0-9_.-]/', '?', (string) $payloadKey) ?? '?';
+    }
+
+    error_log(
+        'Fonnte webhook authorization rejected. Payload keys=' . implode(',', $payloadKeys)
+        . '; received_secret_length=' . strlen($receivedSecret)
+        . '; configured_secret_length=' . strlen($configuredSecret)
+    );
     respond(403, ['status' => false, 'message' => 'Webhook tidak terotorisasi.']);
 }
 

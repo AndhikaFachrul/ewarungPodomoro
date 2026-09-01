@@ -152,7 +152,8 @@ if ($configuredSecret === '') {
 }
 
 $receivedSecret = trim((string) (
-    $data['secret']
+    $data['webhook-secret-key']
+    ?? $data['secret']
     ?? $data['secret_key']
     ?? $data['secretkey']
     ?? $data['secretKey']

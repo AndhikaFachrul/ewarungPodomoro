@@ -279,9 +279,6 @@ if (in_array($message, ['menu', 'bantuan', 'help'], true)) {
         . "- berapa harga telur sekarang?\n"
         . "- stok beras\n"
         . "- apakah susu masih tersedia?";
-} elseif (preg_match('/^(?:cek\\s+)?(harga|stok)\\s+(.+)$/u', $message, $matches) === 1) {
-    $command = $matches[1];
-    $keyword = trim($matches[2]);
 } else {
     [$command, $keyword] = parseProductQuestion($message);
 

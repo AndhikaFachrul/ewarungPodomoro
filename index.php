@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toko Podomoro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/responsive.css" rel="stylesheet">
     <style>
         .bg-navy { background-color: #122b4f; color: white; }
         .bg-red-accent { background-color: #c92a2a; color: white; }
@@ -82,13 +83,13 @@
                 <p class="mt-3">Jangan lewatkan kesempatan langka ini untuk belanja cerdas dan hemat, segera borong stok kebutuhan rumah tangga Anda sekarang juga sebelum kehabisan!</p>
             </div>
             <div class="col-md-6 text-center">
-                <img src="assets/img/promo.png" alt="Promo Sembako" class="img-fluid rounded-circle  ">
+                <img src="assets/img/promo.png" alt="Promo Sembako" class="img-fluid rounded-circle hero-image">
             </div>
         </div>
     </div>
 </div>
 
-<div class="container my-5">
+<div class="container my-5 home-product-section">
     <div class="row g-4" id="produk-container">
         </div>
 </div>
@@ -108,16 +109,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 barangLimit.forEach(item => {
                     html += `
                     <!-- PERBAIKAN 2: Ubah col-md-3 menjadi col-md-4 agar susunannya 3 kolom -->
-                    <div class="col-md-4 col-6 mb-3">
-                        <div class="card h-100 p-3 text-center border-1 shadow-lg" style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;">
-                            <img src="assets/img/${item.gambar || 'default.jpg'}" class="card-img-top mx-auto mt-2" style="height:160px; object-fit:contain;" alt="${item.nama_barang}">
+                    <div class="col-12 col-sm-6 col-md-4 mb-3">
+                        <div class="card h-100 p-3 text-center border-1 shadow-lg home-product-card" style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;">
+                            <img src="assets/img/${item.gambar || 'default.jpg'}" class="card-img-top mx-auto mt-2 home-product-image" style="height:160px; object-fit:contain;" alt="${item.nama_barang}">
                             <div class="card-body p-2 d-flex flex-column justify-content-between">
                                 <div>
-                                    <h6 class="fw-bold mb-1 text-navy" style="font-size: 0.95rem;">${item.nama_barang.toUpperCase()}</h6>
-                                    <p class="text-danger fw-bold mb-3 fs-5">Rp ${parseInt(item.harga).toLocaleString('id-ID')}</p>
+                                    <h6 class="fw-bold mb-1 text-navy home-product-name" style="font-size: 0.95rem;">${item.nama_barang.toUpperCase()}</h6>
+                                    <p class="text-danger fw-bold mb-3 fs-5 home-product-price">Rp ${parseInt(item.harga).toLocaleString('id-ID')}</p>
                                 </div>
                                 <!-- PERBAIKAN 3: Tombol dibuat oval dan diatur lebarnya sesuai gambar -->
-                                <button onclick="lihatDetail(${item.id_barang})" class="btn btn-red btn-sm fw-bold mx-auto px-4 py-2" style="border-radius: 25px; width: 85%;">LIHAT DETAIL</button>
+                                <button onclick="lihatDetail(${item.id_barang})" class="btn btn-red btn-sm fw-bold mx-auto px-4 py-2 home-product-button" style="border-radius: 25px; width: 85%;">LIHAT DETAIL</button>
                             </div>
                         </div>
                     </div>`;

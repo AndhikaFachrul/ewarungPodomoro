@@ -8,6 +8,7 @@ require_once __DIR__ . '/functions/security.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tentang Kami - Toko Podomoro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/responsive.css" rel="stylesheet">
     <style>
         .text-navy { color: #122b4f; }
         .text-red { color: #b01c20; }
@@ -71,24 +72,24 @@ require_once __DIR__ . '/functions/security.php';
     </div>
 </nav>
 
-<div class="container mt-5 pt-4 text-center">
-    <div class="d-flex justify-content-center align-items-center mb-5">
-        <img src="assets/img/pdm_logotas.png" alt="Logo Toko Podomoro" style="height: 120px; margin-right: 20px; object-fit: contain;">
-        <div class="d-flex flex-column justify-content-center text-start" style="line-height: 1; font-family: 'Arial Black', Impact, sans-serif;">
+<div class="container mt-5 pt-4 text-center about-brand-section">
+    <div class="d-flex justify-content-center align-items-center mb-5 about-brand-lockup">
+        <img src="assets/img/pdm_logotas.png" alt="Logo Toko Podomoro" class="about-brand-logo" style="height: 120px; margin-right: 0; object-fit: contain;">
+        <div class="d-flex flex-column justify-content-center text-start about-brand-name" style="line-height: 1; font-family: 'Arial Black', Impact, sans-serif;">
             <span style="color: #b01c20; font-weight: 900; font-size: 2.5rem; letter-spacing: 2px;">TOKO</span>
             <span style="color: #122b4f; font-weight: 900; font-size: 2.5rem; letter-spacing: 1px; margin-top: 5px;">PODOMORO</span>
         </div>
     </div>
 </div>
 
-<div class="container mb-5">
+<div class="container mb-5 about-copy">
     <h3 class="text-navy fw-bold mb-3">Tentang Toko Podomoro</h3>
     <p class="text-secondary lh-lg" style="text-align: justify;">
         Toko Grosir Podomoro merupakan pusat belanja kebutuhan rumah tangga dan sembako terpercaya yang berdedikasi untuk memberikan harga terbaik dengan kualitas barang yang terjamin. Kami hadir untuk memenuhi segala kebutuhan harian masyarakat, mulai dari beras, minyak goreng, bumbu dapur, hingga perlengkapan kebersihan. Dengan pelayanan yang ramah dan sistem yang modern, Toko Podomoro berkomitmen untuk menjadi mitra belanja terbaik bagi keluarga Anda.
     </p>
 </div>
 
-<div class="container mb-5 pb-5">
+<div class="container mb-5 pb-5 about-sections">
     <hr class="mb-5">
     <div class="row">
         <div class="col-md-6 mb-4">
@@ -111,7 +112,7 @@ require_once __DIR__ . '/functions/security.php';
     </div>
 </div>
 
-<div class="bg-light-blue py-5 border-top">
+<div class="bg-light-blue py-5 border-top contact-section">
     <div class="container">
         <div class="row">
             <div class="col-md-5 mb-4">

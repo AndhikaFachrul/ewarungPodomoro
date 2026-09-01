@@ -34,10 +34,11 @@ while($row = mysqli_fetch_assoc($res_var)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail <?php echo htmlspecialchars($barang['nama_barang']); ?> - Podomoro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/responsive.css" rel="stylesheet">
 </head>
 <body class="bg-light">
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm mb-5">
+<nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm mb-5 detail-navbar">
     <div class="container">
         <a class="navbar-brand fw-bold" style="color: #122b4f;" href="index.php">🛍️ TOKO PODOMORO</a>
         <a href="index.php" class="btn btn-outline-secondary">Kembali</a>
@@ -45,9 +46,9 @@ while($row = mysqli_fetch_assoc($res_var)) {
 </nav>
 
 <div class="container">
-    <div class="row bg-white p-4 shadow-sm rounded">
+    <div class="row bg-white p-4 shadow-sm rounded detail-card">
         <div class="col-md-5 text-center">
-            <img src="assets/img/<?php echo htmlspecialchars($barang['gambar']); ?>" class="img-fluid rounded" alt="<?php echo htmlspecialchars($barang['nama_barang']); ?>" style="max-height: 400px;">
+            <img src="assets/img/<?php echo htmlspecialchars($barang['gambar']); ?>" class="img-fluid rounded product-detail-image" alt="<?php echo htmlspecialchars($barang['nama_barang']); ?>" style="max-height: 400px;">
         </div>
         <div class="col-md-7">
             <span class="badge bg-secondary mb-2"><?php echo htmlspecialchars($barang['kategori']); ?></span>

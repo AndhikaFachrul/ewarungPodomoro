@@ -8,6 +8,7 @@ require_once __DIR__ . '/functions/security.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Barang - Toko Podomoro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/responsive.css" rel="stylesheet">
     <style>
         .text-navy { color: #122b4f; }
         .btn-red { background-color: #e53e3e; color: white; }
@@ -65,7 +66,7 @@ require_once __DIR__ . '/functions/security.php';
 <div class="container my-4">
     
     <!-- Wrapper Flexbox untuk mensejajarkan Header dan Pencarian -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 products-toolbar">
         
         <!-- Judul diposisikan di sebelah kiri -->
         <h4 class="fw-bold text-navy mb-0">Semua Produk Kami</h4>

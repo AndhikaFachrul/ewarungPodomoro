@@ -10,6 +10,7 @@ check_login();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Keranjang Belanja - Podomoro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/responsive.css" rel="stylesheet">
     <style>
         .bg-navy { background-color: #122b4f; }
         .text-red { color: #dc3545; }
@@ -17,9 +18,9 @@ check_login();
 </head>
 <body class="bg-light">
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm cart-navbar">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="index.php" style="text-decoration: none;">
+        <a class="navbar-brand d-flex align-items-center" href="../index.php" style="text-decoration: none;">
             <img src="../assets/img/pdm_logotas.png" alt="Icon Tas" style="height: 45px; margin-right: 12px; object-fit: contain;">
             
             <div class="d-flex flex-column justify-content-center" style="line-height: 1; font-family: 'Arial Black', Impact, sans-serif;">
@@ -28,16 +29,16 @@ check_login();
             </div>
         </a>
         <div class="d-flex">
-            <a href="../index.php" class="btn btn-outline-secondary me-2">Kembali Belanja</a>
+            <a href="../index.php" class="btn btn-outline-secondary cart-back-button">Kembali Belanja</a>
         </div>
     </div>
 </nav>
 
-<div class="container mt-5">
+<div class="container mt-5 cart-page">
     <h3 class="mb-4 text-navy">Keranjang Belanja</h3>
     <div class="row">
         <div class="col-md-8">
-            <div class="card shadow-sm mb-3">
+            <div class="card shadow-sm mb-3 cart-table-card">
                 <div class="card-body">
                     <table class="table table-borderless align-middle" id="cart-table">
                         <thead class="border-bottom">
@@ -50,14 +51,14 @@ check_login();
                             </tr>
                         </thead>
                         <tbody id="cart-items">
-                            <tr><td colspan="4" class="text-center">Memuat keranjang...</td></tr>
+                            <tr><td colspan="5" class="text-center cart-empty-cell">Memuat keranjang...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card shadow-sm">
+            <div class="card shadow-sm cart-summary-card">
                 <div class="card-body">
                     <h5 class="card-title fw-bold">Ringkasan Pesanan</h5>
                     <hr>
@@ -87,19 +88,19 @@ function loadCart() {
             let html = '';
             if(res.data.length === 0) {
                 // Ubah colspan menjadi 5 karena ada kolom Aksi
-                html = '<tr><td colspan="5" class="text-center py-4">Keranjang masih kosong.</td></tr>';
+                html = '<tr><td colspan="5" class="text-center py-4 cart-empty-cell">Keranjang masih kosong.</td></tr>';
             } else {
                 res.data.forEach(item => {
                     html += `
                     <tr class="border-bottom">
-                        <td>
+                        <td class="cart-product-cell" data-label="Produk">
                             <div class="d-flex align-items-center">
                                 <img src="../assets/img/${item.gambar || 'default.jpg'}" width="60" class="me-3 rounded" alt="${item.nama_barang}">
                                 <span class="fw-bold">${item.nama_barang} <span class="text-primary">(${item.nama_satuan})</span></span>
                             </div>
                         </td>
-                        <td>Rp ${parseInt(item.harga).toLocaleString('id-ID')}</td>
-                        <td>
+                        <td data-label="Harga">Rp ${parseInt(item.harga).toLocaleString('id-ID')}</td>
+                        <td data-label="Kuantitas">
                             <!-- Tombol Plus Minus Kuantitas -->
                             <div class="input-group input-group-sm" style="width: 110px;">
                                 <button class="btn btn-outline-secondary fw-bold" type="button" onclick="updateQty(${item.id_cart}, ${item.qty - 1})">-</button>
@@ -107,8 +108,8 @@ function loadCart() {
                                 <button class="btn btn-outline-secondary fw-bold" type="button" onclick="updateQty(${item.id_cart}, ${item.qty + 1})">+</button>
                             </div>
                         </td>
-                        <td class="fw-bold">Rp ${parseInt(item.subtotal).toLocaleString('id-ID')}</td>
-                        <td>
+                        <td class="fw-bold" data-label="Subtotal">Rp ${parseInt(item.subtotal).toLocaleString('id-ID')}</td>
+                        <td data-label="Aksi">
                             <!-- Tombol Hapus -->
                             <button class="btn btn-danger btn-sm" onclick="deleteItem(${item.id_cart})">Hapus</button>
                         </td>

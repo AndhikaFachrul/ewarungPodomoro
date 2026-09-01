@@ -193,6 +193,9 @@ if ($message === '') {
 $member = trim((string) ($data['member'] ?? ''));
 $timestamp = trim((string) ($data['timestamp'] ?? ''));
 $inboxId = isset($data['inboxid']) && is_numeric($data['inboxid']) ? (int) $data['inboxid'] : null;
+if ($inboxId !== null && $inboxId <= 0) {
+    $inboxId = null;
+}
 
 if ($sender === '' || $message === '') {
     error_log(

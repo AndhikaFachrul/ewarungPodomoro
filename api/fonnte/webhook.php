@@ -181,12 +181,27 @@ if ($configuredDevice !== '' && $payloadDevice !== $configuredDevice) {
 }
 
 $sender = trim((string) ($data['sender'] ?? ''));
+if ($sender === '') {
+    $sender = trim((string) ($data['pengirim'] ?? ''));
+}
+
 $message = normalizeText((string) ($data['message'] ?? ''));
+if ($message === '') {
+    $message = normalizeText((string) ($data['pesan'] ?? ''));
+}
+
 $member = trim((string) ($data['member'] ?? ''));
 $timestamp = trim((string) ($data['timestamp'] ?? ''));
 $inboxId = isset($data['inboxid']) && is_numeric($data['inboxid']) ? (int) $data['inboxid'] : null;
 
 if ($sender === '' || $message === '') {
+    error_log(
+        'Fonnte webhook ignored empty payload.'
+        . ' sender_length=' . strlen(trim((string) ($data['sender'] ?? '')))
+        . '; pengirim_length=' . strlen(trim((string) ($data['pengirim'] ?? '')))
+        . '; message_length=' . strlen(trim((string) ($data['message'] ?? '')))
+        . '; pesan_length=' . strlen(trim((string) ($data['pesan'] ?? '')))
+    );
     respond(200, ['status' => true, 'action' => 'ignored_empty']);
 }
 

@@ -24,6 +24,51 @@ function normalizeText(string $value): string
         : strtolower($value);
 }
 
+/**
+ * Mengenali pertanyaan harga atau stok tanpa AI.
+ *
+ * @return array{0: string, 1: string} [intent, kata kunci barang]
+ */
+function parseProductQuestion(string $message): array
+{
+    $cleanMessage = preg_replace('/[^\\p{L}\\p{N}\\s-]+/u', ' ', $message) ?? $message;
+    $cleanMessage = normalizeText($cleanMessage);
+
+    if ($cleanMessage === '') {
+        return ['', ''];
+    }
+
+    $hasPriceIntent = preg_match('/\\b(?:harga|harganya)\\b/u', $cleanMessage) === 1
+        || preg_match('/\\bberapa\\s+rupiah\\b/u', $cleanMessage) === 1;
+
+    $hasStockIntent = preg_match('/\\b(?:stok|stoknya|stock|stocknya|tersedia|ketersediaan)\\b/u', $cleanMessage) === 1
+        || preg_match('/\\b(?:masih|apakah)\\s+ada\\b/u', $cleanMessage) === 1;
+
+    $intent = $hasPriceIntent ? 'harga' : ($hasStockIntent ? 'stok' : '');
+    if ($intent === '') {
+        return ['', ''];
+    }
+
+    $stopWords = [
+        'ada', 'apakah', 'barang', 'berapa', 'bisa', 'boleh', 'buat', 'cek',
+        'cekkan', 'coba', 'dong', 'harga', 'harganya', 'ini', 'ingin', 'kak',
+        'ketersediaan', 'lagi', 'mas', 'masih', 'mbak', 'mohon', 'mau', 'nya',
+        'pak', 'produk', 'saat', 'saya', 'sekarang', 'sih', 'stock', 'stocknya',
+        'stok', 'stoknya', 'tersedia', 'tolong', 'untuk', 'ya',
+    ];
+
+    $tokens = preg_split('/\\s+/u', $cleanMessage, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+    $productTokens = [];
+
+    foreach ($tokens as $token) {
+        if (!in_array($token, $stopWords, true)) {
+            $productTokens[] = $token;
+        }
+    }
+
+    return [$intent, trim(implode(' ', $productTokens))];
+}
+
 function rupiah(float $value): string
 {
     return 'Rp' . number_format($value, 0, ',', '.');
@@ -228,18 +273,26 @@ $keyword = '';
 
 if (in_array($message, ['menu', 'bantuan', 'help'], true)) {
     $reply = "*Chatbot Toko Podomoro*\n\n"
-        . "Gunakan salah satu format berikut:\n"
-        . "- harga [nama barang]\n"
-        . "- stok [nama barang]\n\n"
+        . "Anda dapat bertanya dengan bahasa sederhana.\n\n"
         . "Contoh:\n"
-        . "harga minyak\n"
-        . "stok beras";
-} elseif (preg_match('/^(?:cek\s+)?(harga|stok)\s+(.+)$/u', $message, $matches) === 1) {
+        . "- harga minyak\n"
+        . "- berapa harga telur sekarang?\n"
+        . "- stok beras\n"
+        . "- apakah susu masih tersedia?";
+} elseif (preg_match('/^(?:cek\\s+)?(harga|stok)\\s+(.+)$/u', $message, $matches) === 1) {
     $command = $matches[1];
     $keyword = trim($matches[2]);
 } else {
-    // Pesan checkout dan percakapan biasa tetap ditangani admin secara manual.
-    respond(200, ['status' => true, 'action' => 'ignored_non_command']);
+    [$command, $keyword] = parseProductQuestion($message);
+
+    if ($command === '') {
+        // Pesan checkout dan percakapan biasa tetap ditangani admin secara manual.
+        respond(200, ['status' => true, 'action' => 'ignored_non_command']);
+    }
+
+    if ($keyword === '') {
+        $reply = 'Sebutkan nama barang yang ingin diperiksa. Contoh: berapa harga telur sekarang?';
+    }
 }
 
 if ($keyword !== '') {
